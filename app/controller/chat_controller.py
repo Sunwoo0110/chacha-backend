@@ -31,7 +31,7 @@ class ChatController:
         user = await mongodb.db.users.find_one({"_id": ObjectId(chat.user_id)})
         await mongodb.db.users.update_one({"_id": ObjectId(chat.user_id)}, {"$set": {"chat_cnt": user["chat_cnt"]+1}})
         
-        return character["name"], character["img"], response
+        return character["name"], character["img"], response, user["chat_cnt"]+1
     
     async def update_chat_cnt(self, character_id):
         character = await mongodb.db.characters.find_one({"_id": ObjectId(character_id)})

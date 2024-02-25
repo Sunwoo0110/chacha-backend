@@ -5,3 +5,4 @@ openai
 motor
 odmantic
 pymongo
+langchain_openai

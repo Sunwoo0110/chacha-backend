@@ -12,10 +12,10 @@ router = APIRouter(
 @router.post("/response",\
     description="채팅 답변 생성")
 async def create_chat(chat: ChatCreateRequest):
-    name, img, response = await chat_controller.create_chat(chat)
+    name, img, response, chat_cnt = await chat_controller.create_chat(chat)
     
     if response:
-        return { "result": "success", "chat": {"name": name, "img": img, "response": response}}
+        return { "result": "success", "chat": {"name": name, "img": img, "response": response, "chat_cnt": chat_cnt}}
     else:
         return { "result": "fail" }
     
