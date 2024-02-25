@@ -7,10 +7,6 @@ from routers import users, characters, situations, chats
 from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI() # FastAPI 모듈
-app.include_router(users.router) # 다른 route파일들을 불러와 포함시킴
-app.include_router(characters.router)
-app.include_router(situations.router)
-app.include_router(chats.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,6 +15,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(users.router) # 다른 route파일들을 불러와 포함시킴
+app.include_router(characters.router)
+app.include_router(situations.router)
+app.include_router(chats.router)
 
 @app.on_event("startup")
 def on_app_start():

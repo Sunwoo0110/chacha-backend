@@ -13,7 +13,7 @@ class ChatController:
         if not character or not situation:
             return None 
         
-        if character["personality"]:
+        if character["personality"] is not "":
             custom = Custom(name=character["name"], set=character["setting"], personality=character["personality"],
                             line=character["accent"], situation=situation["description"])
         else:
@@ -35,5 +35,5 @@ class ChatController:
     
     async def update_chat_cnt(self, character_id):
         character = await mongodb.db.characters.find_one({"_id": ObjectId(character_id)})
-        await mongodb.db.characters.update_one({"_id": ObjectId(character_id)}, {"$set": {"user_cnt": character["user_cnt"]+1}})
+        await mongodb.db.characters.update_one({"_id": ObjectId(character_id)}, {"$inc": {"user_cnt": 1}})
         return character["user_cnt"]+1
