@@ -20,7 +20,7 @@ class ChatController:
             custom = Custom2(name=character["name"], set=character["setting"], 
                             line=character["accent"], situation=situation["description"])
             
-        response = await custom.receive_chat(chat.user_chat, chat.user_id)
+        response = custom.receive_chat(chat.user_chat, chat.user_id)
         
         ## 대화 저장
         new_chat = await mongodb.db.chats.insert_one({"user_id": chat.user_id, "character_id": chat.character_id,
