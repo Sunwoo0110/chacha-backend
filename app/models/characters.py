@@ -8,9 +8,11 @@ def PyObjectId(v: str):
 class Characters(BaseModel):
     id: Optional[PyObjectId] = Field(alias='_id')
     user_id: str  # MongoDB의 ObjectId를 문자열로 저장
-    name: str
+    name: str ## 캐릭터명
+    description: str ## 한줄소개
+    category: int = 0 ## 카테고리
     setting: Optional[str] = None
-    accent: Optional[str] = None
+    example_conv: Optional[str] = None
     personality: Optional[str] = None
     open: bool
     img: Optional[str] = None

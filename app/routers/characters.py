@@ -19,15 +19,29 @@ async def create_character(character: CharacterCreateRequest):
         return { "result": "fail" }
     
 @router.get("/list",\
-    description="캐릭터 리스트 반환")
-async def read_characters():
-    character_list = await character_controller.read_characters()
+    description="캐릭터 리스트 반환) 웹툰/웹소: 1 만화/애니: 2 게임: 3 실존인물: 4 기타: 5")
+async def read_characters(category: int):
+    character_list = await character_controller.read_characters(category)
     res_list = []
+    if character_list == "empty":
+        return { "result": "success", "character": res_list}
+    
     if character_list:
         for cht in character_list:
             res_list.append({"character_id": str(cht["_id"]), "name": cht["name"], 
-                             "setting": cht["setting"], "img": cht["img"], 
-                             "accent": cht["accent"], "personality": cht["personality"], "user_cnt": cht["user_cnt"]})
+                             "description": cht["description"], "img": cht["img"], "user_cnt": cht["user_cnt"]})
         return { "result": "success", "character": res_list}
+    else:
+        return { "result": "fail" }
+    
+@router.get("/setting",\
+    description="캐릭터 설정 확인")
+async def read_character(character_id: str):
+    cht = await character_controller.read_character(character_id)
+    if cht:
+        data = {"character_id": str(cht["_id"]), "name": cht["name"], "category": cht["category"], 
+                                "description": cht["description"], "setting": cht["setting"], 
+                                "example_conv": cht["example_conv"], "open": cht["open"], "img": cht["img"]}
+        return { "result": "success", "character": data }
     else:
         return { "result": "fail" }
