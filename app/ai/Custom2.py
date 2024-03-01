@@ -18,12 +18,12 @@ def get_memory(): # 대화 기록을 저장하는 메모리
     memory = ConversationBufferMemory(memory_key="chat_history", ai_prefix="bot", human_prefix="you")
     return memory
 
-def get_search_chain(name, set, line, situation): # 인격을 지정하기 위해 필요한 데이터를 가져오는 코드
+def get_search_chain(name, intro, set, line, situation): # 인격을 지정하기 위해 필요한 데이터를 가져오는 코드
     def get_data(input_variables):
         chat = input_variables["input"]
-        return {"name": name, "set": set, "line": line, "situation": situation}
+        return {"name": name, "intro": intro, "set": set, "line": line, "situation": situation}
     
-    search_chain = TransformChain(input_variables=["input"], output_variables=["name", "set", "line", "situation"], transform=get_data)
+    search_chain = TransformChain(input_variables=["input"], output_variables=["name", "intro", "set", "line", "situation"], transform=get_data)
     return search_chain
 
 def get_current_memory_chain(): # 현재 대화 기록을 가져오는 코드
@@ -41,12 +41,11 @@ def get_chatgpt_chain(): # GPT-4를 사용하여 대화를 생성하는 코드
     template = """ 너는 'you'가 말을 했을 때 'bot'이 대답하는 것처럼 대화를 해 줘.
     
     'bot'의 이름은 {name}
+    'bot'은 이런 캐릭터야. {intro}
     'bot'은 이런 설정을 갖고 있어. 각 설정은 키워드나 짧은 문장으로 되어 있고, /로 구분되어 있으니까 참고해서 설정에 오류가 없도록 대화를 해 줘.
     설정: {set}
     'bot'의 대사를 보여 줄 테니까, 이걸 보고 'bot'의 말투와 비슷하게 말해. 각 문장은 /로 구분되어 있어.
     대사: {line}
-    'bot'과 'you'는 이런 상황에서 대화를 하고 있어. 참고해서 상황에 맞춰서 대답해.
-    상황: {situation}
     
     위에서 설명한 'bot'의 설정, 대사, 상황을 참고해서 'bot'의 말투로 'you'와 상황에 맞춰서 대화해 줘.
     다음 대화에서 'bot'이 할 것 같은 답변을 해 봐.
