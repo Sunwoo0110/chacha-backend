@@ -66,7 +66,7 @@ def get_chatgpt_chain(): # GPT-4를 사용하여 대화를 생성하는 코드
     bot: 
     """
     
-    prompt_template = PromptTemplate(input_variables=["input", "current_chat_history", "name", "set", "line", "situation"], template=template)
+    prompt_template = PromptTemplate(input_variables=["input", "current_chat_history", "name", "intro", "set", "line"], template=template)
     chatgpt_chain = LLMChain(llm=llm, prompt=prompt_template, output_key="output")
     
     return chatgpt_chain
@@ -114,11 +114,12 @@ class Custom2:
             history_messages_key="chat_history",
             )
     
-    def receive_chat(self, chat, session_id):
+    async def receive_chat(self, chat, session_id):
         while True:
             response = self.chain_with_message_history.invoke({"input": chat}, {'configurable': {"session_id": session_id}})
             # print(self.history_for_chain.messages[session_id]) #메모리 잘 되는지 확인용
             if not check_violent(response["output"]):
+                print(response["output"])
                 return response["output"]
             else:
                 print("욕설이 포함된 대화입니다. 다시 생성 중...")

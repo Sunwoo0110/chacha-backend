@@ -121,6 +121,7 @@ class Custom:
             response = self.chain_with_message_history.invoke({"input": chat}, {'configurable': {"session_id": session_id}})
             # print(self.history_for_chain.messages[session_id]) #메모리 잘 되는지 확인용
             if not check_violent(response["output"]):
+                print(response["output"])
                 return response["output"]
             else:
                 print("욕설이 포함된 대화입니다. 다시 생성 중...")
