@@ -40,3 +40,15 @@ class ChatController:
         character = await mongodb.db.characters.find_one({"_id": ObjectId(character_id)})
         await mongodb.db.characters.update_one({"_id": ObjectId(character_id)}, {"$inc": {"user_cnt": 1}})
         return character["user_cnt"]+1
+    
+    async def read_chats(self, user_id, character_id):
+        chat_list = []
+        character = await mongodb.db.characters.find_one({"_id": ObjectId(character_id)})
+        async for document in mongodb.db.chats.find({"user_id": user_id, "character_id": character_id}):
+            print(document)
+            chat_list.append({"name": character["name"], "img": character["img"], 
+                             "user_chat": document["user_chat"], "ai_chat": document["ai_chat"]})
+            
+        if not chat_list:
+            return "empty"
+        return chat_list

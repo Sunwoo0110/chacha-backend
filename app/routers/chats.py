@@ -27,3 +27,19 @@ async def update_chat_cnt(character_id: str):
         return { "result": "success", "user_cnt": result }
     else:
         return { "result": "fail" }
+    
+@router.get("/history", \
+    description="기존 채팅 답변 불러오기")
+async def read_chats(user_id: str, character_id: str):
+    chat_list = await chat_controller.read_chats(user_id, character_id)
+    if chat_list == "empty":
+        return { "result": "success", "chats": []}
+    
+    if chat_list:
+        # for chat in chat_list:
+        #     res_list.append({"name": chat["name"], "img": chat["img"], 
+        #                      "user_chat": chat["user_chat"], "ai_chat": chat["ai_chat"]})
+        return { "result": "success", "chats": chat_list}
+    else:
+        return { "result": "fail" }
+        
