@@ -10,23 +10,23 @@ class ChatController:
         ## 답변 생성
         try:
             character = await mongodb.db.characters.find_one({"_id": ObjectId(chat.character_id)})
-            situation = await mongodb.db.situations.find_one({"_id": ObjectId(chat.situation_id)})
-            if not character or not situation:
+            
+            if not character:
                 return None 
             
+            print(character)
             if character["personality"] != "":
-                custom = Custom(name=character["name"], set=character["setting"], personality=character["personality"],
-                                line=character["example_conv"], situation=situation["description"])
+                custom = Custom(name=character["name"], intro=character["description"], set=character["setting"], 
+                                personality=character["personality"], line=character["example_conv"])
             else:
-                custom = Custom2(name=character["name"], set=character["setting"], 
-                                line=character["example_conv"], situation=situation["description"])
-                
+                custom = Custom2(name=character["name"], intro=character["description"], set=character["setting"], 
+                                line=character["example_conv"])
+            print(custom)  
             response = await custom.receive_chat(chat.user_chat, chat.user_id)
             
             ## 대화 저장
-            new_chat = await mongodb.db.chats.insert_one({"user_id": chat.user_id, "character_id": chat.character_id,
-                                                        "situation_id": chat.situation_id, "user_chat": chat.user_chat,
-                                                        "ai_chat": response})
+            new_chat = await mongodb.db.chats.insert_one({"user_id": chat.user_id, "character_id": chat.character_id, 
+                                                          "user_chat": chat.user_chat, "ai_chat": response})
             
             ## 사용자의 채팅 횟수 증가
             user = await mongodb.db.users.find_one({"_id": ObjectId(chat.user_id)})

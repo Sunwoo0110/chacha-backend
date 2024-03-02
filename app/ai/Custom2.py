@@ -18,12 +18,12 @@ def get_memory(): # 대화 기록을 저장하는 메모리
     memory = ConversationBufferMemory(memory_key="chat_history", ai_prefix="bot", human_prefix="you")
     return memory
 
-def get_search_chain(name, intro, set, line, situation): # 인격을 지정하기 위해 필요한 데이터를 가져오는 코드
+def get_search_chain(name, intro, set, line): # 인격을 지정하기 위해 필요한 데이터를 가져오는 코드
     def get_data(input_variables):
         chat = input_variables["input"]
-        return {"name": name, "intro": intro, "set": set, "line": line, "situation": situation}
+        return {"name": name, "intro": intro, "set": set, "line": line}
     
-    search_chain = TransformChain(input_variables=["input"], output_variables=["name", "intro", "set", "line", "situation"], transform=get_data)
+    search_chain = TransformChain(input_variables=["input"], output_variables=["name", "intro", "set", "line"], transform=get_data)
     return search_chain
 
 def get_current_memory_chain(): # 현재 대화 기록을 가져오는 코드
@@ -85,9 +85,9 @@ def check_violent(text): # 욕필 함수
             
 
 class Custom2:
-    def __init__(self, name, set, line, situation) -> None:
+    def __init__(self, name, intro, set, line) -> None:
         self.memory = get_memory()
-        self.search_chain = get_search_chain(name, set, line, situation)
+        self.search_chain = get_search_chain(name, intro, set, line)
         self.current_memory_chain = get_current_memory_chain()
         self.chatgpt_chain = get_chatgpt_chain()
         
