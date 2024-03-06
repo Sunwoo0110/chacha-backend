@@ -29,7 +29,8 @@ async def read_characters(category: int):
     if character_list:
         for cht in character_list:
             res_list.append({"character_id": str(cht["_id"]), "name": cht["name"], 
-                             "description": cht["description"], "img": cht["img"], "user_cnt": cht["user_cnt"]})
+                             "description": cht["description"], "img": cht["img"], 
+                             "user_cnt": cht["user_cnt"], "chat_cnt": cht["chat_cnt"]})
         return { "result": "success", "character": res_list}
     else:
         return { "result": "fail" }

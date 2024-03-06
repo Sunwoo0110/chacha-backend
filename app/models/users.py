@@ -1,6 +1,7 @@
 from typing import Optional, List
 from pydantic import BaseModel, Field, HttpUrl
 from bson import ObjectId
+from datetime import datetime
 
 def PyObjectId(ObjectId):
     @classmethod
@@ -17,6 +18,7 @@ class Users(BaseModel):
     id: Optional[PyObjectId] = Field(alias='_id')
     uuid: str
     chat_cnt: int = 0
+    created_at: Optional[datetime]
 
     class Config:
         arbitrary_types_allowed = True

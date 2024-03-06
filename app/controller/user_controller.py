@@ -1,6 +1,8 @@
 from models import mongodb
 from models.users import Users
 from bson import ObjectId
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 class UserController:    
     async def create_user(self, uuid):
@@ -12,7 +14,7 @@ class UserController:
             return existing_user
         else:
             # 사용자가 없으면, 새로운 사용자를 추가
-            new_user = await mongodb.db.users.insert_one({"uuid": uuid, "chat_cnt": 0 })
+            new_user = await mongodb.db.users.insert_one({"uuid": uuid, "chat_cnt": 0, "created_at": datetime.now(ZoneInfo("Asia/Seoul"))})
             find_user = await mongodb.db.users.find_one({"_id": ObjectId(new_user.inserted_id) })
             print(find_user)
             return find_user

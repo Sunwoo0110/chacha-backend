@@ -1,6 +1,7 @@
 from typing import Optional, List
 from pydantic import BaseModel, Field, HttpUrl
 from bson import ObjectId
+from datetime import datetime
 
 def PyObjectId(v: str):
     return ObjectId(v)
@@ -17,6 +18,8 @@ class Characters(BaseModel):
     open: bool
     img: Optional[str] = None
     user_cnt: int = 0
+    chat_cnt: int = 0
+    created_at: Optional[datetime]
 
     class Config:
         arbitrary_types_allowed = True

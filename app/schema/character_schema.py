@@ -1,5 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 class CharacterCreateRequest(BaseModel):
     user_id: str = Field(..., example="65daae4171dbf1b50bdf2dbf", 
@@ -14,14 +16,18 @@ class CharacterCreateRequest(BaseModel):
                     description="캐릭터 설정")
     example_conv: Optional[str] = Field(..., example="요~ 준수 / 십일 분의 일, 일일일. 간첩신고해도 되겠어. / 누가 계속 농구하래!", 
                     description="캐릭터 말투")
-    personality: Optional[str] = Field(..., example="차분함 / 기가 셈 / 친절함 / 멘헤라임", 
+    personality: Optional[str] = Field(None, example="차분함 / 기가 셈 / 친절함 / 멘헤라임", 
                     description="캐릭터 성격")
     open: bool = Field(..., 
                     description="캐릭터 공개 여부")
     img: Optional[str] = Field(...,
                     description="캐릭터 사진(S3 버킷 url)")
-    user_cnt: int = Field(..., example=0,
+    user_cnt: Optional[int] = Field(default=0, example=0,
                     description="캐릭터 사용자 수")
+    chat_cnt: Optional[int] = Field(default=0, example=0,
+                    description="캐릭터 채팅 수")
+    created_at: Optional[datetime] = Field(
+        default_factory=lambda: datetime.now(ZoneInfo("Asia/Seoul")))
 
     # class Config:
     #     arbitrary_types_allowed = True
