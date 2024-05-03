@@ -28,7 +28,3 @@ class CharacterCreateRequest(BaseModel):
                     description="캐릭터 채팅 수")
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now(ZoneInfo("Asia/Seoul")))
-
-    # class Config:
-    #     arbitrary_types_allowed = True
-    #     json_encoders = {ObjectId: str}

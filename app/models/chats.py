@@ -10,7 +10,6 @@ class Chats(BaseModel):
     id: Optional[PyObjectId] = Field(alias='_id')
     user_id: str
     character_id: str
-    # situation_id: str
     user_chat: str
     ai_chat: str
     created_at: Optional[datetime]

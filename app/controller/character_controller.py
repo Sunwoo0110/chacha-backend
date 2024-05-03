@@ -9,9 +9,6 @@ class CharacterController:
     
     async def read_characters(self, category):
         character_list = []
-        # async for document in mongodb.db.characters.find({"category": category}):
-        #     print(document)
-        #     character_list.append(document)
         async for document in mongodb.db.characters.find({"open": True, "category": category}).sort("user_cnt", -1):
             character_list.append(document)
             

@@ -6,7 +6,6 @@ from zoneinfo import ZoneInfo
 
 class UserController:    
     async def create_user(self, uuid):
-        # existing_user = await mongodb.engine.find_one(Users, Users.uuid == uuid)
         existing_user = await mongodb.db.users.find_one({"uuid": uuid })
         if existing_user:
             # 기존 사용자가 있으면, 해당 사용자의 ID를 반환
